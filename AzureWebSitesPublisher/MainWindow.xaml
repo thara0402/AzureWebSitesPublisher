@@ -1,8 +1,38 @@
-﻿<Window x:Class="AzureWebSitesPublisher.MainWindow"
+﻿<metro:Window x:Class="AzureWebSitesPublisher.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525">
+        xmlns:metro="http://schemas.codeplex.com/elysium"
+        xmlns:local="clr-namespace:AzureWebSitesPublisher"
+        Title="Azure Web Sites Publisher" Height="266" Width="525" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+    <metro:Window.DataContext>
+        <local:MainWindowViewModel />
+    </metro:Window.DataContext>
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="10"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="420"/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="70"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Row="1" Grid.Column="1" Text="Publish Profile"></TextBlock>
+        <TextBox x:Name ="textBox1" Grid.Row="2" Grid.Column="1" Text="{Binding PublishSettingsPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+        <Button Content="Browse" Grid.Row="2" Grid.Column="3" Click="Button_Click"></Button>
+        <TextBlock Grid.Row="4" Grid.Column="1" Text="Web Deploy Package"></TextBlock>
+        <TextBox x:Name ="textBox2" Grid.Row="5" Grid.Column="1" Text="{Binding SourcePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+        <Button Content="Browse" Grid.Row="5" Grid.Column="3" Click="Button_Click_1"></Button>
+        <Button x:Name="buttonDeploy" Content="Deploy" Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="3" Click="Button_Click_2"></Button>
+        <ProgressBar x:Name="progressBar" Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="3"  IsIndeterminate="True" Visibility="Hidden"></ProgressBar>
     </Grid>
-</Window>
+</metro:Window>
