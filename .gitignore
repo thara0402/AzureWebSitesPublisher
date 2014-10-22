@@ -154,3 +154,28 @@ $RECYCLE.BIN/
 
 # Mac desktop service store files
 .DS_Store
+packages/Elysium.Theme.2.0.4/Elysium.Theme.2.0.4.nupkg
+packages/Elysium.Theme.2.0.4/lib/net40-client/Design/Microsoft.Expression.Drawing.Design.dll
+packages/Elysium.Theme.2.0.4/lib/net40-client/Design/en/Microsoft.Expression.Drawing.Design.resources.dll
+packages/Elysium.Theme.2.0.4/lib/net40-client/Elysium.Design.10.0.dll
+packages/Elysium.Theme.2.0.4/lib/net40-client/Elysium.Design.11.0.dll
+packages/Elysium.Theme.2.0.4/lib/net40-client/Elysium.dll
+packages/Elysium.Theme.2.0.4/lib/net40-client/Microsoft.Expression.Drawing.dll
+packages/Elysium.Theme.2.0.4/lib/net40-client/Microsoft.Expression.Drawing.xml
+packages/Elysium.Theme.2.0.4/lib/net40-client/Microsoft.Windows.Shell.dll
+packages/Elysium.Theme.2.0.4/lib/net40-client/Microsoft.Windows.Shell.xml
+packages/Elysium.Theme.2.0.4/lib/net40-client/en/Elysium.xml
+packages/Elysium.Theme.2.0.4/lib/net40-client/en/Microsoft.Expression.Drawing.xml
+packages/Elysium.Theme.2.0.4/lib/net40-client/ru/Elysium.xml
+packages/Elysium.Theme.2.0.4/lib/net45/Design/Microsoft.Expression.Drawing.Design.dll
+packages/Elysium.Theme.2.0.4/lib/net45/Design/en/Microsoft.Expression.Drawing.Design.resources.dll
+packages/Elysium.Theme.2.0.4/lib/net45/Design/ru/Microsoft.Expression.Drawing.Design.resources.dll
+packages/Elysium.Theme.2.0.4/lib/net45/Elysium.Design.11.0.dll
+packages/Elysium.Theme.2.0.4/lib/net45/Elysium.dll
+packages/Elysium.Theme.2.0.4/lib/net45/Microsoft.Expression.Drawing.dll
+packages/Elysium.Theme.2.0.4/lib/net45/Microsoft.Expression.Drawing.xml
+packages/Elysium.Theme.2.0.4/lib/net45/en/Elysium.xml
+packages/Elysium.Theme.2.0.4/lib/net45/en/Microsoft.Expression.Drawing.xml
+packages/Elysium.Theme.2.0.4/lib/net45/ru/Elysium.xml
+packages/Elysium.Theme.2.0.4/lib/net45/ru/Microsoft.Expression.Drawing.xml
+packages/Elysium.Theme.2.0.4/readme.txt
