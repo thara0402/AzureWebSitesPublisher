@@ -22,15 +22,41 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10"/>
-            <ColumnDefinition Width="420"/>
-            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="410"/>
+            <ColumnDefinition Width="20"/>
             <ColumnDefinition Width="70"/>
         </Grid.ColumnDefinitions>
         <TextBlock Grid.Row="1" Grid.Column="1" Text="Publish Profile"></TextBlock>
-        <TextBox x:Name ="textBox1" Grid.Row="2" Grid.Column="1" Text="{Binding PublishSettingsPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+        <TextBox x:Name ="textBox1" Grid.Row="2" Grid.Column="1" Text="{Binding PublishSettingsPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <Validation.ErrorTemplate>
+                <ControlTemplate>
+                    <DockPanel>
+                        <AdornedElementPlaceholder />
+                        <TextBlock
+                    DockPanel.Dock="Right"
+                    Text="＊"
+                    Foreground="Red"
+                    ToolTip="{Binding /ErrorContent}" />
+                    </DockPanel>
+                </ControlTemplate>
+            </Validation.ErrorTemplate>
+        </TextBox>
         <Button Content="Browse" Grid.Row="2" Grid.Column="3" Click="Button_Click"></Button>
         <TextBlock Grid.Row="4" Grid.Column="1" Text="Web Deploy Package"></TextBlock>
-        <TextBox x:Name ="textBox2" Grid.Row="5" Grid.Column="1" Text="{Binding SourcePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+        <TextBox x:Name ="textBox2" Grid.Row="5" Grid.Column="1" Text="{Binding SourcePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <Validation.ErrorTemplate>
+                <ControlTemplate>
+                    <DockPanel>
+                        <AdornedElementPlaceholder />
+                        <TextBlock
+                    DockPanel.Dock="Right"
+                    Text="＊"
+                    Foreground="Red"
+                    ToolTip="{Binding /ErrorContent}" />
+                    </DockPanel>
+                </ControlTemplate>
+            </Validation.ErrorTemplate>
+        </TextBox>
         <Button Content="Browse" Grid.Row="5" Grid.Column="3" Click="Button_Click_1"></Button>
         <Button x:Name="buttonDeploy" Content="Deploy" Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="3" Click="Button_Click_2"></Button>
         <ProgressBar x:Name="progressBar" Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="3"  IsIndeterminate="True" Visibility="Hidden"></ProgressBar>

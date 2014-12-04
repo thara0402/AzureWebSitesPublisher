@@ -55,7 +55,6 @@ namespace AzureWebSitesPublisher
         {
             var publishSettingsPath = this.ViewModel.PublishSettingsPath;
             var sourcePath = this.ViewModel.SourcePath;
-
             try
             {
                 this.buttonDeploy.IsEnabled = false;
