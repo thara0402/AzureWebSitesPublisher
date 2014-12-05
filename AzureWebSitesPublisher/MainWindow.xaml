@@ -27,7 +27,7 @@
             <ColumnDefinition Width="70"/>
         </Grid.ColumnDefinitions>
         <TextBlock Grid.Row="1" Grid.Column="1" Text="Publish Profile"></TextBlock>
-        <TextBox x:Name ="textBox1" Grid.Row="2" Grid.Column="1" Text="{Binding PublishSettingsPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+        <TextBox x:Name ="textBox1" Grid.Row="2" Grid.Column="1" Text="{Binding PublishSettingsPath, Mode=TwoWay, UpdateSourceTrigger=Explicit}">
             <Validation.ErrorTemplate>
                 <ControlTemplate>
                     <DockPanel>
@@ -42,8 +42,8 @@
             </Validation.ErrorTemplate>
         </TextBox>
         <Button Content="Browse" Grid.Row="2" Grid.Column="3" Click="Button_Click"></Button>
-        <TextBlock Grid.Row="4" Grid.Column="1" Text="Web Deploy Package"></TextBlock>
-        <TextBox x:Name ="textBox2" Grid.Row="5" Grid.Column="1" Text="{Binding SourcePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+        <TextBlock Grid.Row="4" Grid.Column="1" Text="WebDeploy Package"></TextBlock>
+        <TextBox x:Name ="textBox2" Grid.Row="5" Grid.Column="1" Text="{Binding SourcePath, Mode=TwoWay, UpdateSourceTrigger=Explicit}">
             <Validation.ErrorTemplate>
                 <ControlTemplate>
                     <DockPanel>

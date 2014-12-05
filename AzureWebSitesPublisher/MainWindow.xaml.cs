@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -53,15 +54,18 @@ namespace AzureWebSitesPublisher
 
         private async void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            var publishSettingsPath = this.ViewModel.PublishSettingsPath;
-            var sourcePath = this.ViewModel.SourcePath;
+            if (MainWindowViewModel.UpdateItemSource(this) == false)
+            {
+                return;
+            }
+                        
             try
             {
                 this.buttonDeploy.IsEnabled = false;
                 this.progressBar.Visibility = Visibility.Visible;
                 var result = await Task.Run(() =>
                 {
-                    return WebSitePublisherHelpler.Publish(publishSettingsPath, sourcePath);
+                    return WebSitePublisherHelpler.Publish(this.ViewModel.PublishSettingsPath, this.ViewModel.SourcePath);
                 });
                 this.buttonDeploy.IsEnabled = true;
                 this.progressBar.Visibility = Visibility.Hidden;
