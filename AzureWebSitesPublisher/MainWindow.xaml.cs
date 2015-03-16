@@ -63,9 +63,13 @@ namespace AzureWebSitesPublisher
             {
                 this.buttonDeploy.IsEnabled = false;
                 this.progressBar.Visibility = Visibility.Visible;
+
+                var publishSettingsPath = this.ViewModel.PublishSettingsPath;
+                var sourcePath = this.ViewModel.SourcePath;
+
                 var result = await Task.Run(() =>
                 {
-                    return WebSitePublisherHelpler.Publish(this.ViewModel.PublishSettingsPath, this.ViewModel.SourcePath);
+                    return WebSitePublisherHelpler.Publish(publishSettingsPath, sourcePath);
                 });
                 this.buttonDeploy.IsEnabled = true;
                 this.progressBar.Visibility = Visibility.Hidden;
