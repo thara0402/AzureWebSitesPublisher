@@ -20,13 +20,6 @@ namespace AzureWebSitesPublisher
         }
     }
 
-    public enum ContentType
-    {
-        Pacakge,
-        Folder,
-        File
-    }
-
     public static class WebSitePublisherHelpler
     {
         public static DeploymentChangeSummary Publish(string publishSettingsPath, string sourcePath)
@@ -34,23 +27,17 @@ namespace AzureWebSitesPublisher
             if (String.IsNullOrEmpty(publishSettingsPath)) throw new ArgumentNullException("publishSettingsPath");
             if (String.IsNullOrEmpty(sourcePath)) throw new ArgumentNullException("sourcePath");
 
-            var contentType = ContentType.File;
-
             if (!File.Exists(publishSettingsPath))
             {
                 throw new Exception(String.Format("{0}: Not found.", publishSettingsPath));
             }
-            if (Directory.Exists(sourcePath))
-            {
-                contentType = ContentType.Folder;
-            }
-            else if (!File.Exists(sourcePath))
+            if (!File.Exists(sourcePath))
             {
                 throw new Exception(String.Format("{0}: Not found.", sourcePath));
             }
-            else if (Path.GetExtension(sourcePath).Equals(".zip", StringComparison.InvariantCultureIgnoreCase))
+            else if (Path.GetExtension(sourcePath).Equals(".zip", StringComparison.InvariantCultureIgnoreCase) == false)
             {
-                contentType = ContentType.Pacakge;
+                throw new Exception("Extension supports only zip.");
             }
 
             var document = XElement.Load(publishSettingsPath);
@@ -61,25 +48,12 @@ namespace AzureWebSitesPublisher
             }
 
             var publishUrl = profile.SafeGetAttribute("publishUrl");
-            var destinationAppUrl = profile.SafeGetAttribute("destinationAppUrl");
             var userName = profile.SafeGetAttribute("userName");
             var password = profile.SafeGetAttribute("userPWD");
             var siteName = profile.SafeGetAttribute("msdeploySite");
-
-            // Database related attributes
-            var databaseInfo = new SqlConnectionStringBuilder();
-            var databaseSection = profile.XPathSelectElements("./databases/add").FirstOrDefault();
-            if (databaseSection != null)
-            {
-                databaseInfo.ConnectionString = databaseSection.SafeGetAttribute("connectionString");
-            }
             var webDeployServer = string.Format(@"https://{0}/msdeploy.axd?site={1}", publishUrl, siteName);
 
             // Set up deployment
-            var sourceProvider = contentType == ContentType.Pacakge ? DeploymentWellKnownProvider.Package : DeploymentWellKnownProvider.ContentPath;
-            var destinationProvider = contentType == ContentType.Pacakge ? DeploymentWellKnownProvider.Auto : DeploymentWellKnownProvider.ContentPath;
-
-            var sourceOptions = new DeploymentBaseOptions();
             var destinationOptions = new DeploymentBaseOptions
             {
                 ComputerName = webDeployServer,
@@ -89,48 +63,37 @@ namespace AzureWebSitesPublisher
                 IncludeAcls = true,
                 TraceLevel = System.Diagnostics.TraceLevel.Info
             };
-//            destinationOptions.Trace += (sender, e) => Console.WriteLine(e.Message);
-
-            var destinationPath = siteName;
-            if (contentType == ContentType.File)
-            {
-                var filename = new FileInfo(sourcePath).Name;
-                destinationPath += "/" + filename;
-            }
+            //            destinationOptions.Trace += (sender, e) => Console.WriteLine(e.Message);
 
             var syncOptions = new DeploymentSyncOptions { DoNotDelete = true };  // Please change as you want
 
-            // Start deployment
-            using (var deploy = DeploymentManager.CreateObject(sourceProvider, sourcePath, sourceOptions))
+            DeploymentChangeSummary result;
+            try
             {
-                // Apply package parameters
-                foreach (var p in deploy.SyncParameters)
+                // Start deployment
+                using (var deploy = DeploymentManager.CreateObject(DeploymentWellKnownProvider.Package, sourcePath, new DeploymentBaseOptions()))
                 {
-                    switch (p.Name)
+                    // Apply package parameters
+                    foreach (var p in deploy.SyncParameters)
                     {
-                        case "IIS Web Application Name":
-                        case "AppPath":
-                            p.Value = siteName;
-                            break;
-                        case "DbServer":
-                            p.Value = databaseInfo.DataSource;
-                            break;
-                        case "DbName":
-                            p.Value = databaseInfo.InitialCatalog;
-                            break;
-                        case "DbUsername":
-                        case "DbAdminUsername":
-                            p.Value = databaseInfo.UserID;
-                            break;
-                        case "DbPassword":
-                        case "DbAdminPassword":
-                            p.Value = databaseInfo.Password;
-                            break;
+                        switch (p.Name)
+                        {
+                            case "IIS Web Application Name":
+                            case "AppPath":
+                                p.Value = siteName;
+                                break;
+                        }
                     }
-                }
 
-                return deploy.SyncTo(destinationProvider, destinationPath, destinationOptions, syncOptions);
+                    result = deploy.SyncTo(DeploymentWellKnownProvider.Auto, siteName, destinationOptions, syncOptions);
+                }
             }
+            catch (Exception)
+            {
+                throw;
+            }
+            return result;
         }
+
     }
 }

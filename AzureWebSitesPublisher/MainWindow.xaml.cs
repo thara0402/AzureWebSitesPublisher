@@ -76,7 +76,23 @@ namespace AzureWebSitesPublisher
                     return WebSitePublisherHelpler.Publish(publishSettingsPath, sourcePath);
                 });
                 this.progressBar.Visibility = Visibility.Hidden;
-                MessageBox.Show("Deployment finsihed.", this.Title);
+
+                var resultString = new StringBuilder();
+                if (result != null)
+                {
+                    resultString.Append("Deployment finsihed." + Environment.NewLine);
+                    resultString.Append(Environment.NewLine);
+                    resultString.Append("Added: " + result.ObjectsAdded + Environment.NewLine);
+                    resultString.Append("Updated: " + result.ObjectsUpdated + Environment.NewLine);
+                    resultString.Append("Deleted: " + result.ObjectsDeleted + Environment.NewLine);
+                    resultString.Append("Total errors: " + result.Errors + Environment.NewLine);
+                    resultString.Append("Total changes: " + result.TotalChanges + Environment.NewLine);
+                }
+                else
+                {
+                    resultString.Append("Deployment failed." + Environment.NewLine);
+                }
+                MessageBox.Show(resultString.ToString(), this.Title);
             }
             catch (Exception ex)
             {
