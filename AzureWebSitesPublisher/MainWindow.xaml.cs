@@ -38,7 +38,7 @@ namespace AzureWebSitesPublisher
             dialog.Filter = "PublishSettings File (*.PublishSettings)|*.PublishSettings";
             if (dialog.ShowDialog() == true)
             {
-                this.textBox1.Text = dialog.FileName;
+                this.textBoxProfile.Text = dialog.FileName;
             }
         }
 
@@ -48,7 +48,7 @@ namespace AzureWebSitesPublisher
             dialog.Filter = "Zip File (*.zip) | *.zip";
             if (dialog.ShowDialog() == true)
             {
-                this.textBox2.Text = dialog.FileName;
+                this.textBoxPackage.Text = dialog.FileName;
             }
         }
 
@@ -62,6 +62,10 @@ namespace AzureWebSitesPublisher
             try
             {
                 this.buttonDeploy.IsEnabled = false;
+                this.textBoxProfile.IsEnabled = false;
+                this.textBoxPackage.IsEnabled = false;
+                this.buttonBrowseProfile.IsEnabled = false;
+                this.buttonBrowsePackage.IsEnabled = false; 
                 this.progressBar.Visibility = Visibility.Visible;
 
                 var publishSettingsPath = this.ViewModel.PublishSettingsPath;
@@ -71,15 +75,21 @@ namespace AzureWebSitesPublisher
                 {
                     return WebSitePublisherHelpler.Publish(publishSettingsPath, sourcePath);
                 });
-                this.buttonDeploy.IsEnabled = true;
                 this.progressBar.Visibility = Visibility.Hidden;
                 MessageBox.Show("Deployment finsihed.", this.Title);
             }
             catch (Exception ex)
             {
-                this.buttonDeploy.IsEnabled = true;
                 this.progressBar.Visibility = Visibility.Hidden;
                 MessageBox.Show(ex.Message, this.Title);
+            }
+            finally
+            {
+                this.buttonDeploy.IsEnabled = true;
+                this.textBoxProfile.IsEnabled = true;
+                this.textBoxPackage.IsEnabled = true;
+                this.buttonBrowseProfile.IsEnabled = true;
+                this.buttonBrowsePackage.IsEnabled = true;
             }
         }
     }
