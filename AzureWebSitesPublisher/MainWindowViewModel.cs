@@ -17,6 +17,7 @@ namespace AzureWebSitesPublisher
     {
         private string _publishSettingsPath;
         private string _sourcePath;
+        private string _parametersPath;
         private Dictionary<string, IEnumerable> _errors = new Dictionary<string, IEnumerable>();
 
         public string PublishSettingsPath
@@ -27,7 +28,7 @@ namespace AzureWebSitesPublisher
                 this.SetProperty(ref this._publishSettingsPath, value);
                 if (string.IsNullOrEmpty(value))
                 {
-                    this._errors["PublishSettingsPath"] = new[] { "PublishSettings ファイルを入力してください" };
+                    this._errors["PublishSettingsPath"] = new[] { "PublishSettings ファイルを入力してください。" };
                 }
                 else
                 {
@@ -45,12 +46,23 @@ namespace AzureWebSitesPublisher
                 this.SetProperty(ref this._sourcePath, value);
                 if (string.IsNullOrEmpty(value))
                 {
-                    this._errors["SourcePath"] = new[] { "WebDeploy Package ファイルを入力してください" };
+                    this._errors["SourcePath"] = new[] { "WebDeploy Package ファイルを入力してください。" };
                 }
                 else
                 {
                     this._errors["SourcePath"] = null;
                 }
+                this.OnErrorsChanged();
+            }
+        }
+
+        public string ParametersPath
+        {
+            get { return this._parametersPath; }
+            set
+            {
+                this.SetProperty(ref this._parametersPath, value);
+                this._errors["ParametersPath"] = null;
                 this.OnErrorsChanged();
             }
         }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -22,7 +23,7 @@ namespace AzureWebSitesPublisher
 
     public static class WebSitePublisherHelpler
     {
-        public static DeploymentChangeSummary Publish(string publishSettingsPath, string sourcePath)
+        public static DeploymentChangeSummary Publish(string publishSettingsPath, string sourcePath, string parametersPath)
         {
             if (String.IsNullOrEmpty(publishSettingsPath)) throw new ArgumentNullException("publishSettingsPath");
             if (String.IsNullOrEmpty(sourcePath)) throw new ArgumentNullException("sourcePath");
@@ -40,13 +41,13 @@ namespace AzureWebSitesPublisher
                 throw new Exception("Extension supports only zip.");
             }
 
+            // PublishSettings
             var document = XElement.Load(publishSettingsPath);
             var profile = document.XPathSelectElement("//publishProfile[@publishMethod='MSDeploy']");
             if (profile == null)
             {
                 throw new Exception(String.Format("{0}: Not a valid publishing profile.", publishSettingsPath));
             }
-
             var publishUrl = profile.SafeGetAttribute("publishUrl");
             var userName = profile.SafeGetAttribute("userName");
             var password = profile.SafeGetAttribute("userPWD");
@@ -61,10 +62,12 @@ namespace AzureWebSitesPublisher
                 Password = password,
                 AuthenticationType = "basic",
                 IncludeAcls = true,
-                TraceLevel = System.Diagnostics.TraceLevel.Info
+                TraceLevel = TraceLevel.Info
             };
-            //            destinationOptions.Trace += (sender, e) => Console.WriteLine(e.Message);
-
+            destinationOptions.Trace += (sender, e) =>
+            {
+                Trace.TraceInformation(e.Message);
+            };
             var syncOptions = new DeploymentSyncOptions { DoNotDelete = true };  // Please change as you want
 
             DeploymentChangeSummary result;
@@ -79,12 +82,22 @@ namespace AzureWebSitesPublisher
                         switch (p.Name)
                         {
                             case "IIS Web Application Name":
-                            case "AppPath":
                                 p.Value = siteName;
+                                break;
+                            default:
+                                // SetParameters.xml
+                                if (!String.IsNullOrEmpty(parametersPath))
+                                {
+                                    var parameters = XElement.Load(parametersPath);
+                                    var setParameter = parameters.XPathSelectElement(String.Format("//setParameter[@name='{0}']", p.Name));
+                                    if (setParameter != null)
+                                    {
+                                        p.Value = setParameter.SafeGetAttribute("value");
+                                    }
+                                }
                                 break;
                         }
                     }
-
                     result = deploy.SyncTo(DeploymentWellKnownProvider.Auto, siteName, destinationOptions, syncOptions);
                 }
             }

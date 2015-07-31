@@ -32,7 +32,7 @@ namespace AzureWebSitesPublisher
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void buttonBrowseProfile_Click(object sender, RoutedEventArgs e)
         {
             var dialog = new OpenFileDialog();
             dialog.Filter = "PublishSettings File (*.PublishSettings)|*.PublishSettings";
@@ -42,7 +42,7 @@ namespace AzureWebSitesPublisher
             }
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void buttonBrowsePackage_Click(object sender, RoutedEventArgs e)
         {
             var dialog = new OpenFileDialog();
             dialog.Filter = "Zip File (*.zip) | *.zip";
@@ -52,7 +52,17 @@ namespace AzureWebSitesPublisher
             }
         }
 
-        private async void Button_Click_2(object sender, RoutedEventArgs e)
+        private void buttonBrowseParameters_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new OpenFileDialog();
+            dialog.Filter = "XML File (*.xml) | *.xml";
+            if (dialog.ShowDialog() == true)
+            {
+                this.textBoxParameters.Text = dialog.FileName;
+            }
+        }
+
+        private async void buttonDeploy_Click(object sender, RoutedEventArgs e)
         {
             if (MainWindowViewModel.UpdateItemSource(this) == false)
             {
@@ -61,19 +71,16 @@ namespace AzureWebSitesPublisher
                         
             try
             {
-                this.buttonDeploy.IsEnabled = false;
-                this.textBoxProfile.IsEnabled = false;
-                this.textBoxPackage.IsEnabled = false;
-                this.buttonBrowseProfile.IsEnabled = false;
-                this.buttonBrowsePackage.IsEnabled = false; 
+                this.IsEnabledControl(false);
                 this.progressBar.Visibility = Visibility.Visible;
 
                 var publishSettingsPath = this.ViewModel.PublishSettingsPath;
                 var sourcePath = this.ViewModel.SourcePath;
+                var parametersPath = this.ViewModel.ParametersPath;
 
                 var result = await Task.Run(() =>
                 {
-                    return WebSitePublisherHelpler.Publish(publishSettingsPath, sourcePath);
+                    return WebSitePublisherHelpler.Publish(publishSettingsPath, sourcePath, parametersPath);
                 });
                 this.progressBar.Visibility = Visibility.Hidden;
 
@@ -101,12 +108,22 @@ namespace AzureWebSitesPublisher
             }
             finally
             {
-                this.buttonDeploy.IsEnabled = true;
-                this.textBoxProfile.IsEnabled = true;
-                this.textBoxPackage.IsEnabled = true;
-                this.buttonBrowseProfile.IsEnabled = true;
-                this.buttonBrowsePackage.IsEnabled = true;
+                this.IsEnabledControl(true);
             }
+        }
+
+        private void IsEnabledControl(bool isEnabled)
+        {
+            this.textBoxProfile.IsEnabled = isEnabled;
+            this.buttonBrowseProfile.IsEnabled = isEnabled;
+
+            this.textBoxPackage.IsEnabled = isEnabled;
+            this.buttonBrowsePackage.IsEnabled = isEnabled;
+
+            this.textBoxParameters.IsEnabled = isEnabled;
+            this.buttonBrowseParameters.IsEnabled = isEnabled;
+
+            this.buttonDeploy.IsEnabled = isEnabled;
         }
     }
 }

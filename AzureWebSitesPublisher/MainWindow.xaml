@@ -3,12 +3,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:metro="http://schemas.codeplex.com/elysium"
         xmlns:local="clr-namespace:AzureWebSitesPublisher"
-        Title="Azure WebApp Publisher" Height="266" Width="525" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+        Title="Azure Web App Publisher" Height="326" Width="525" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <metro:Window.DataContext>
         <local:MainWindowViewModel />
     </metro:Window.DataContext>
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="30"/>
             <RowDefinition Height="10"/>
             <RowDefinition Height="20"/>
             <RowDefinition Height="30"/>
@@ -41,7 +44,7 @@
                 </ControlTemplate>
             </Validation.ErrorTemplate>
         </TextBox>
-        <Button x:Name="buttonBrowseProfile" Content="Browse" Grid.Row="2" Grid.Column="3" Click="Button_Click"></Button>
+        <Button x:Name="buttonBrowseProfile" Content="Browse" Grid.Row="2" Grid.Column="3" Click="buttonBrowseProfile_Click"></Button>
         <TextBlock Grid.Row="4" Grid.Column="1" Text="WebDeploy Package"></TextBlock>
         <TextBox x:Name ="textBoxPackage" Grid.Row="5" Grid.Column="1" Text="{Binding SourcePath, Mode=TwoWay, UpdateSourceTrigger=Explicit}">
             <Validation.ErrorTemplate>
@@ -57,8 +60,24 @@
                 </ControlTemplate>
             </Validation.ErrorTemplate>
         </TextBox>
-        <Button x:Name="buttonBrowsePackage" Content="Browse" Grid.Row="5" Grid.Column="3" Click="Button_Click_1"></Button>
-        <Button x:Name="buttonDeploy" Content="Deploy" Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="3" Click="Button_Click_2"></Button>
-        <ProgressBar x:Name="progressBar" Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="3"  IsIndeterminate="True" Visibility="Hidden"></ProgressBar>
+        <Button x:Name="buttonBrowsePackage" Content="Browse" Grid.Row="5" Grid.Column="3" Click="buttonBrowsePackage_Click"></Button>
+        <TextBlock Grid.Row="7" Grid.Column="1" Text="SetParameters.xml"></TextBlock>
+        <TextBox x:Name ="textBoxParameters" Grid.Row="8" Grid.Column="1" Text="{Binding ParametersPath, Mode=TwoWay, UpdateSourceTrigger=Explicit}">
+            <Validation.ErrorTemplate>
+                <ControlTemplate>
+                    <DockPanel>
+                        <AdornedElementPlaceholder />
+                        <TextBlock
+                    DockPanel.Dock="Right"
+                    Text="＊"
+                    Foreground="Red"
+                    ToolTip="{Binding /ErrorContent}" />
+                    </DockPanel>
+                </ControlTemplate>
+            </Validation.ErrorTemplate>
+        </TextBox>
+        <Button x:Name="buttonBrowseParameters" Content="Browse" Grid.Row="8" Grid.Column="3" Click="buttonBrowseParameters_Click"></Button>
+        <Button x:Name="buttonDeploy" Content="Deploy" Grid.Row="10" Grid.Column="1" Grid.ColumnSpan="3" Click="buttonDeploy_Click"></Button>
+        <ProgressBar x:Name="progressBar" Grid.Row="12" Grid.Column="1" Grid.ColumnSpan="3"  IsIndeterminate="True" Visibility="Hidden"></ProgressBar>
     </Grid>
 </metro:Window>
