@@ -55,7 +55,7 @@ namespace AzureWebSitesPublisher
         private void buttonBrowseParameters_Click(object sender, RoutedEventArgs e)
         {
             var dialog = new OpenFileDialog();
-            dialog.Filter = "XML File (*.xml) | *.xml";
+            dialog.Filter = "XML File (*.SetParameters.xml) | *.SetParameters.xml";
             if (dialog.ShowDialog() == true)
             {
                 this.textBoxParameters.Text = dialog.FileName;
